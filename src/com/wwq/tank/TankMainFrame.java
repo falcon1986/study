@@ -26,6 +26,7 @@ public class TankMainFrame extends Frame {
 	private Enemy enemy;
 	
 	public List<Actor> actors;
+
 	
 	public TankMainFrame() {
 		this.setSize(TankContant.GAME_WIDTH, TankContant.GAME_HEIGHT);
