@@ -6,22 +6,42 @@ import java.awt.image.BufferedImage;
 
 import com.wwq.tank.ResourceMgr;
 import com.wwq.tank.constant.Direction;
+import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
 
 public class Bullet extends Actor {
 	
 	protected Color color;
 	
+	public Bullet() {
+		this.group = new Group();
+		this.role = Role.BULLET;
+	}
+	
+	public Bullet(int x, int y, Direction dir) {
+		this();
+		rect.x = x;
+		rect.y = y;
+		this.dir = dir;
+		rect.width = TankContant.BULLET_W;
+		rect.height = TankContant.BULLET_H;
+		this.xSpeed = TankContant.BULLET_SPEED;
+		this.ySpeed = TankContant.BULLET_SPEED;
+		this.moving = true;
+		this.color = Color.RED;
+		this.live = true;
+	}
+	
 	@Override
 	public void paint(Graphics g) {
 		Color oldColor = g.getColor();
 		g.setColor(color);
 		
-		g.drawImage(getImage(), x, y, null);
+		g.drawImage(getImage(), rect.x, rect.y, null);
 		
 		if(moving) {
-			x = dir.moveToX(x, xSpeed, movingCount);
-			y = dir.moveToY(y, ySpeed, movingCount);
+			rect.x = dir.moveToX(rect.x, xSpeed, movingCount);
+			rect.y = dir.moveToY(rect.y, xSpeed, movingCount);
 		}
 		
 		if(checkOutBound()) {
@@ -36,19 +56,6 @@ public class Bullet extends Actor {
 		this.live = false;
 	}
 
-	public Bullet(int x, int y, Direction dir) {
-		this.x = x;
-		this.y = y;
-		this.dir = dir;
-		this.w = TankContant.BULLET_W;
-		this.h = TankContant.BULLET_H;
-		this.xSpeed = TankContant.BULLET_SPEED;
-		this.ySpeed = TankContant.BULLET_SPEED;
-		this.moving = true;
-		this.color = Color.RED;
-		this.live = true;
-	}
-	
 	private BufferedImage getImage() {
 		if(Direction.LEFT == this.dir) {
 			return ResourceMgr.bulletL;

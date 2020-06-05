@@ -2,17 +2,28 @@ package com.wwq.tank.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.wwq.tank.ResourceMgr;
 import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Direction;
+import com.wwq.tank.constant.Role;
 
 public class Tank extends Actor{
 	
 	public Tank(TankMainFrame frame) {
 		this.frame = frame;
 		this.live = true;
+		this.group = new Group();
+		this.role = Role.TANK;
+	}
+	
+	public Tank(TankMainFrame frame, Group group) {
+		this.frame = frame;
+		this.live = true;
+		this.group = group;
+		this.role = Role.TANK;
 	}
 	
 	@Override
@@ -20,11 +31,11 @@ public class Tank extends Actor{
 		Color oldColor = g.getColor();
 		g.setColor(Color.ORANGE);
 		
-		g.drawImage(getImage(), x, y, null);
+		g.drawImage(getImage(), rect.x, rect.y, null);
 		
 		if(moving) {
-			x = dir.moveToX(x, xSpeed, movingCount);
-			y = dir.moveToY(y, ySpeed, movingCount);
+			rect.x = dir.moveToX(rect.x, xSpeed, movingCount);
+			rect.y = dir.moveToY(rect.y, xSpeed, movingCount);
 		}
 		
 		if(checkOutBound()) {
@@ -35,11 +46,13 @@ public class Tank extends Actor{
 	}
 	
 	public void fire(){
-		Bullet bullet = new Bullet(x, y, dir);
-		int nx = x + w / 2 - bullet.getW() / 2;
-		int ny = y + h / 2 - bullet.getH() / 2;
-		bullet.setX(nx);
-		bullet.setY(ny);
+		Bullet bullet = new Bullet(rect.x, rect.y, dir);
+		int nx = rect.x + rect.width / 2 - bullet.getRect().width / 2;
+		int ny = rect.y + rect.height / 2 - bullet.getRect().height / 2;
+		Rectangle rect1 = bullet.getRect();
+		rect1.x = nx;
+		rect1.y = ny;
+		bullet.setGroup(group);
 		frame.actors.add(bullet);
 	}
 	

@@ -1,16 +1,19 @@
 package com.wwq.tank.entity;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.UUID;
 
 import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Direction;
+import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
 
 public class Actor {
-	protected int x = TankContant.TANK_X;
-	protected int y = TankContant.TANK_Y;
-	protected int w = TankContant.TANK_W;
-	protected int h = TankContant.TANK_H;
+	protected String id;
+	protected Role role;
+	
+	protected Rectangle rect = null;
 	protected Direction dir = Direction.DOWN;
 	protected int xSpeed = TankContant.TANK_SPEED;
 	protected int ySpeed = TankContant.TANK_SPEED;
@@ -18,13 +21,19 @@ public class Actor {
 	protected int movingCount = 0;
 	protected boolean live;
 	protected TankMainFrame frame;
+	protected Group group;
+	
+	public Actor() {
+		id = UUID.randomUUID().toString().replaceAll("-","");
+		rect = new Rectangle(TankContant.TANK_X, TankContant.TANK_Y, TankContant.TANK_W, TankContant.TANK_H);
+	}
 	
 	public void paint(Graphics g){
-		g.fillRect(x, y, w, h);
+		g.fillRect(rect.x, rect.y, rect.width, rect.height);
 		
 		if(moving) {
-			x = dir.moveToX(x, xSpeed, movingCount);
-			y = dir.moveToY(y, ySpeed, movingCount);
+			rect.x = dir.moveToX(rect.x, xSpeed, movingCount);
+			rect.y = dir.moveToY(rect.y, xSpeed, movingCount);
 		}
 		
 		if(checkOutBound()) {
@@ -37,16 +46,16 @@ public class Actor {
 	}
 
 	protected boolean checkOutBound() {
-		if(x + w < 0) { //超出左侧边界
+		if(rect.x + rect.width < 0) { //超出左侧边界
 			return true;
 		}
-		if(x > TankContant.GAME_WIDTH) { //超出右侧边界
+		if(rect.x > TankContant.GAME_WIDTH) { //超出右侧边界
 			return true;
 		}
-		if(y + h < 0) { //超出上侧边界
+		if(rect.y + rect.height < 0) { //超出上侧边界
 			return true;
 		}
-		if(y > TankContant.GAME_HEIGHT) { //超出下侧边界
+		if(rect.y > TankContant.GAME_HEIGHT) { //超出下侧边界
 			return true;
 		}
 		return false;
@@ -63,30 +72,15 @@ public class Actor {
 		}
 	}
 	
-	public int getX() {
-		return x;
+
+	public Rectangle getRect() {
+		return rect;
 	}
-	public void setX(int x) {
-		this.x = x;
+
+	public void setRect(Rectangle rect) {
+		this.rect = rect;
 	}
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
-	}
-	public int getW() {
-		return w;
-	}
-	public void setW(int w) {
-		this.w = w;
-	}
-	public int getH() {
-		return h;
-	}
-	public void setH(int h) {
-		this.h = h;
-	}
+
 	public Direction getDir() {
 		return dir;
 	}
@@ -126,5 +120,29 @@ public class Actor {
 
 	public void setMovingCount(int movingCount) {
 		this.movingCount = movingCount;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 }

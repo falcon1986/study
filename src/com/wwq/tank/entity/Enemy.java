@@ -2,11 +2,11 @@ package com.wwq.tank.entity;
 
 import java.awt.Graphics;
 import java.util.Enumeration;
-import java.util.Random;
 import java.util.Stack;
 
 import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Direction;
+import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
 
 public class Enemy extends Player {
@@ -16,6 +16,7 @@ public class Enemy extends Player {
 
 	public Enemy(int count, int maxCount, TankMainFrame frame) {
 		super(count, frame);
+		this.role = Role.ENEMY;
 		this.maxCount = maxCount;
 		aliveTanks = new Stack<Tank>();
 		this.live = true;
@@ -25,7 +26,12 @@ public class Enemy extends Player {
 	public void paint(Graphics g) {
 		Enumeration<Tank> enums = aliveTanks.elements();
 		while(enums.hasMoreElements()) {
-			enums.nextElement().paint(g);
+			Tank tank = enums.nextElement();
+			if(tank.isLive()) {
+				tank.paint(g);
+			} else {
+				aliveTanks.remove(tank);
+			}
 		}
 	}
 
@@ -48,22 +54,24 @@ public class Enemy extends Player {
 	}
 	
 	public void randomTask(Tank tank){
-		Random r = new Random();
-		int x = Math.abs(r.nextInt()) % (TankContant.GAME_WIDTH - tank.getW());
-		tank.setX(x);
-		int y = Math.abs(r.nextInt()) % (TankContant.GAME_HEIGHT - tank.getH());
-		tank.setY(y);
+		int x = Math.abs(rand.nextInt()) % (TankContant.GAME_WIDTH - tank.getRect().width);
+		tank.getRect().x = x;
+		int y = Math.abs(rand.nextInt()) % (TankContant.GAME_HEIGHT - tank.getRect().height);
+		tank.getRect().y = y;
 		randomTaskDir(tank);
 	}
 
 	public void randomTaskDir(Tank tank) {
-		Random r = new Random();
 		Direction[] dirs = Direction.values();
-		int index = Math.abs(r.nextInt()) % dirs.length;
-		tank.setMoving(true);
+		int r = Math.abs(rand.nextInt());
+		int index = r % dirs.length;
+//		tank.setMoving(true);
 //		tank.setxSpeed(1);
 //		tank.setySpeed(1);
 		tank.setDir(dirs[index]);
+		if(r % 3 == 0) {
+			tank.fire();
+		}
 		this.movingCount = 0;
 	}
 
