@@ -9,7 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Stack;
 
 import com.wwq.tank.constant.Direction;
@@ -81,23 +83,75 @@ public class TankMainFrame extends Frame {
 	public void paint(Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.YELLOW);
-		g.drawString("集合数量：" + actors.size(), 50, 50);
+		g.drawString("集合数量：" + (actors != null ?actors.size() : 0), 50, 50);
 		g.setColor(c);
 		
 		//碰撞检测
 		collisionChecking();
 		
-		for(int i = 0; i < actors.size(); i++) {
-			Actor actor = actors.get(i);
-			if(actor.isLive()) {
-				actor.paint(g);
-			} else {
-				actors.remove(i);
+		//边缘检测
+		boundChecking();
+		
+		if(actors != null) {
+			for(int i = 0; i < actors.size(); i++) {
+				Actor actor = actors.get(i);
+				if(actor.isLive()) {
+					actor.paint(g);
+				} else {
+					actors.remove(i);
+				}
 			}
 		}
 	}
 	
+	private void boundChecking() {
+		for(int i = 0; i < actors.size(); i++) {
+			Actor actor = actors.get(i);
+			if(Role.PLAY == actor.getRole()) {
+				Actor ac = ((Player)actor).getCurTank();
+				if(ac == null) {
+					continue;
+				}
+				boundChecking(ac, false);
+			} else if(Role.ENEMY == actor.getRole()) {
+				Stack<Tank> tanks = ((Enemy)actor).getAliveTanks();
+				if(tanks == null || tanks.size() == 0) {
+					continue;
+				}
+				Enumeration<Tank> tankIter = tanks.elements();
+				while(tankIter.hasMoreElements()) {
+					boundChecking(tankIter.nextElement(), true);
+				}
+			}
+		}
+	}
+	
+	private void boundChecking(Actor actor, boolean changeDir) {
+		boolean flag = false;
+		if(actor.getRect().x < 0) {
+			actor.getRect().x = 0;
+			flag = true;
+		} else if(actor.getRect().x + actor.getRect().width > TankContant.GAME_WIDTH) {
+			actor.getRect().x = TankContant.GAME_WIDTH - actor.getRect().width;
+			flag = true;
+		}
+		
+		if(actor.getRect().y < 30) {
+			actor.getRect().y = 30;
+			flag = true;
+		} else if(actor.getRect().y + actor.getRect().height > TankContant.GAME_HEIGHT) {
+			actor.getRect().y = TankContant.GAME_HEIGHT - actor.getRect().height;
+			flag = true;
+		}
+		if(flag && changeDir) {
+			actor.randomDir();
+		}
+	}
+	
 	private void collisionChecking() {
+		if(actors == null) {
+			return;
+		}
 		for(int i = 0; i < actors.size(); i++) {
 			Actor actor = actors.get(i);
 			for(int j = 0; j < actors.size(); j++) {

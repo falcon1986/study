@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.wwq.tank.ResourceMgr;
+import com.wwq.tank.util.Audio;
+import com.wwq.tank.util.ExplodeUtil;
 
 public class Explode extends Actor {
 	
@@ -16,6 +18,9 @@ public class Explode extends Actor {
 		this.rect.y = y;
 		this.moving = false;
 		this.group = new Group();
+		
+		//爆炸音效
+		new Thread(() -> new Audio("audio/explode.wav").play()).start();;
 	}
 	
 	@Override

@@ -7,16 +7,18 @@ import java.awt.image.BufferedImage;
 
 import com.wwq.tank.ResourceMgr;
 import com.wwq.tank.TankMainFrame;
-import com.wwq.tank.constant.Direction;
 import com.wwq.tank.constant.Role;
 
 public class Tank extends Actor{
+	
+	protected BufferedImage[] images;
 	
 	public Tank(TankMainFrame frame) {
 		this.frame = frame;
 		this.live = true;
 		this.group = new Group();
 		this.role = Role.TANK;
+		images = ResourceMgr.baseTank;
 	}
 	
 	public Tank(TankMainFrame frame, Group group) {
@@ -24,6 +26,11 @@ public class Tank extends Actor{
 		this.live = true;
 		this.group = group;
 		this.role = Role.TANK;
+	}
+	
+	public Tank(TankMainFrame frame, Group group, BufferedImage[] images) {
+		this(frame, group);
+		this.images = images;
 	}
 	
 	@Override
@@ -57,23 +64,13 @@ public class Tank extends Actor{
 	}
 	
 	private BufferedImage getImage() {
-		if(Direction.LEFT == this.dir) {
-			return ResourceMgr.tankL;
-		} else if(Direction.RIGHT == this.dir) {
-			return ResourceMgr.tankR;
-		} else if(Direction.UP == this.dir) {
-			return ResourceMgr.tankU;
-		} else if(Direction.DOWN == this.dir) {
-			return ResourceMgr.tankD;
-		} else if(Direction.LEFT_UP == this.dir) {
-			return ResourceMgr.tankLU;
-		} else if(Direction.LEFT_DOWN == this.dir) {
-			return ResourceMgr.tankLD;
-		} else if(Direction.RIGHT_UP == this.dir) {
-			return ResourceMgr.tankRU;
-		} else if(Direction.RIGHT_DOWN == this.dir) {
-			return ResourceMgr.tankRD;
+		try {
+			return ResourceMgr.getImage(this.dir, images);
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("images:" + images);
+			return null;
 		}
-		return ResourceMgr.tankL;
+		
 	}
 }

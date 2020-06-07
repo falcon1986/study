@@ -1,16 +1,20 @@
 package com.wwq.tank;
 
 import java.util.Enumeration;
+import java.util.Random;
 
 import com.wwq.tank.entity.Enemy;
 import com.wwq.tank.entity.Tank;
+import com.wwq.tank.util.Util;
 
 public class EnemyThread extends Thread {
 	
 	private Enemy enemy;
+	protected Random rand = null;
 
 	public EnemyThread(Enemy enemy) {
 		this.enemy = enemy;
+		rand = new Random();
 	}
 	
 	@Override
@@ -30,8 +34,18 @@ public class EnemyThread extends Thread {
 			while(enums.hasMoreElements()) {
 				Tank t = enums.nextElement();
 				if(t.getMovingCount() >= 100) {
-					enemy.randomTaskDir(enums.nextElement());
+					enemy.randomTaskDir(t);
 				}
+				
+				if(t.getMovingCount() % 5 == 0) {
+					t.fire();
+				}
+			}
+			
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			
 			if(enemy.getTanks().size() == 0 && enemy.getAliveTanks().size() == 0) {

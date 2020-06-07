@@ -2,12 +2,14 @@ package com.wwq.tank.entity;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Direction;
 import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
+import com.wwq.tank.util.Util;
 
 public class Actor {
 	protected String id;
@@ -22,6 +24,7 @@ public class Actor {
 	protected boolean live;
 	protected TankMainFrame frame;
 	protected Group group;
+	protected BufferedImage[] images;
 	
 	public Actor() {
 		id = UUID.randomUUID().toString().replaceAll("-","");
@@ -72,6 +75,16 @@ public class Actor {
 		}
 	}
 	
+	public void randomDir() {
+		Direction[] dirs = Direction.values();
+		int r = Math.abs(Util.rand.nextInt());
+		int index = r % dirs.length;
+		this.setMoving(true);
+//		tank.setxSpeed(1);
+//		tank.setySpeed(1);
+		this.setDir(dirs[index]);
+		this.movingCount = 0;
+	}
 
 	public Rectangle getRect() {
 		return rect;
@@ -144,5 +157,13 @@ public class Actor {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public BufferedImage[] getImages() {
+		return images;
+	}
+
+	public void setImages(BufferedImage[] images) {
+		this.images = images;
 	}
 }

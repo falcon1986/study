@@ -6,8 +6,15 @@ import com.wwq.tank.entity.Actor;
 import com.wwq.tank.entity.Explode;
 
 public class ExplodeUtil {
+	
+	static Audio explodeWav = new Audio("audio/explode.wav");
 
 	public static void showExplode(List<Actor> actors, int x, int y) {
 		actors.add(new Explode(x, y));
+	}
+	
+	public static void showExplodeWav() {
+		explodeWav.play();
+		explodeWav.close();
 	}
 }

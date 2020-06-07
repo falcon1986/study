@@ -2,8 +2,10 @@ package com.wwq.tank.entity;
 
 import java.awt.Graphics;
 import java.util.Enumeration;
+import java.util.ListIterator;
 import java.util.Stack;
 
+import com.wwq.tank.ResourceMgr;
 import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Direction;
 import com.wwq.tank.constant.Role;
@@ -15,11 +17,16 @@ public class Enemy extends Player {
 	private Stack<Tank> aliveTanks;
 
 	public Enemy(int count, int maxCount, TankMainFrame frame) {
-		super(count, frame);
+		super(count, frame, ResourceMgr.badTank1);
 		this.role = Role.ENEMY;
 		this.maxCount = maxCount;
 		aliveTanks = new Stack<Tank>();
 		this.live = true;
+		
+		ListIterator<Tank> allTank = tanks.listIterator();
+		while(allTank.hasNext()) {
+			allTank.next().setImages(ResourceMgr.badTank1);
+		}
 	}
 	
 	@Override
@@ -65,13 +72,10 @@ public class Enemy extends Player {
 		Direction[] dirs = Direction.values();
 		int r = Math.abs(rand.nextInt());
 		int index = r % dirs.length;
-//		tank.setMoving(true);
+		tank.setMoving(true);
 //		tank.setxSpeed(1);
 //		tank.setySpeed(1);
 		tank.setDir(dirs[index]);
-		if(r % 3 == 0) {
-			tank.fire();
-		}
 		this.movingCount = 0;
 	}
 

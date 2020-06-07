@@ -5,11 +5,22 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.wwq.tank.constant.Direction;
+import com.wwq.tank.util.ImageUtil;
+
 public class ResourceMgr {
 
-	public static BufferedImage tankL, tankR, tankU, tankD, tankLU, tankLD, tankRU, tankRD;
+	public static BufferedImage[] baseTank;
 	
-	public static BufferedImage bulletL, bulletR, bulletU, bulletD, bulletLU, bulletLD, bulletRU, bulletRD;
+	public static BufferedImage[] goodTank1;
+	
+	public static BufferedImage[] goodTank2;
+	
+	public static BufferedImage[] badTank1;
+	
+	public static BufferedImage[] badTank2;
+	
+	public static BufferedImage[] bullet;
 	
 	public static BufferedImage[] explode;
 	
@@ -19,30 +30,89 @@ public class ResourceMgr {
 	
 	public static void init() {
 		try {
-			tankL = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankL.gif"));
-			tankR = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankR.gif"));
-			tankU = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankU.gif"));
-			tankD = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankD.gif"));
-			tankLU = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankLU.gif"));
-			tankLD = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankLD.gif"));
-			tankRU = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankRU.gif"));
-			tankRD = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankRD.gif"));
+			baseTank = new BufferedImage[8];
+			baseTank[0] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankU.gif"));
+			baseTank[1] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankRU.gif"));
+			baseTank[2] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankR.gif"));
+			baseTank[3] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankRD.gif"));
+			baseTank[4] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankD.gif"));
+			baseTank[5] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankLD.gif"));
+			baseTank[6] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankL.gif"));
+			baseTank[7] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/tankLU.gif"));
 			
-			bulletL = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletL.gif"));
-			bulletR = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletR.gif"));
-			bulletU = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletU.gif"));
-			bulletD = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletD.gif"));
-			bulletLU = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletL.gif"));
-			bulletLD = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletL.gif"));
-			bulletRU = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletR.gif"));
-			bulletRD = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletR.gif"));
+			bullet = new BufferedImage[8];
+			for(int i = 0; i < 8; i++) {
+				if(i == 0) {
+					bullet[i] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletU.png"));
+				} else {
+					bullet[i] = ImageUtil.rotateImage(ImageIO.read(ResourceMgr.class.getResourceAsStream("images/bulletU.png")), i * 45);
+				}
+			}
 			
 			explode = new BufferedImage[16];
 			for(int i = 1; i <= 16; i++) {
 				explode[i - 1] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/e" + i + ".gif"));
 			}
+			
+			goodTank1 = new BufferedImage[8];
+			for(int i = 0; i < 8; i++) {
+				if(i == 0) {
+					goodTank1[i] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/GoodTank1.png"));
+				} else {
+					goodTank1[i] = ImageUtil.rotateImage(ImageIO.read(ResourceMgr.class.getResourceAsStream("images/GoodTank1.png")), i * 45);
+				}
+			}
+			
+			goodTank2 = new BufferedImage[8];
+			for(int i = 0; i < 8; i++) {
+				if(i == 0) {
+					goodTank2[i] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/GoodTank2.png"));
+				} else {
+					goodTank2[i] = ImageUtil.rotateImage(ImageIO.read(ResourceMgr.class.getResourceAsStream("images/GoodTank2.png")), i * 45);
+				}
+			}
+			
+			badTank1 = new BufferedImage[8];
+			for(int i = 0; i < 8; i++) {
+				if(i == 0) {
+					badTank1[i] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/BadTank1.png"));
+				} else {
+					badTank1[i] = ImageUtil.rotateImage(ImageIO.read(ResourceMgr.class.getResourceAsStream("images/BadTank1.png")), i * 45);
+				}
+			}
+			
+			badTank2 = new BufferedImage[8];
+			for(int i = 0; i < 8; i++) {
+				if(i == 0) {
+					badTank2[i] = ImageIO.read(ResourceMgr.class.getResourceAsStream("images/BadTank2.png"));
+				} else {
+					badTank2[i] = ImageUtil.rotateImage(ImageIO.read(ResourceMgr.class.getResourceAsStream("images/BadTank2.png")), i * 45);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static BufferedImage getImage(Direction dir, BufferedImage[] images) {
+		if(Direction.UP == dir) {
+			return images[0];
+		} else if(Direction.RIGHT_UP == dir) {
+			return images[1];
+		} else if(Direction.RIGHT == dir) {
+			return images[2];
+		} else if(Direction.RIGHT_DOWN == dir) {
+			return images[3];
+		} else if(Direction.DOWN == dir) {
+			return images[4];
+		} else if(Direction.LEFT_DOWN == dir) {
+			return images[5];
+		} else if(Direction.LEFT == dir) {
+			return images[6];
+		} else if(Direction.LEFT_UP == dir) {
+			return images[7];
+		}
+		
+		return images[0];
 	}
 }

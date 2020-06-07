@@ -1,6 +1,5 @@
 package com.wwq.tank.entity;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -10,8 +9,6 @@ import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
 
 public class Bullet extends Actor {
-	
-	protected Color color;
 	
 	public Bullet() {
 		this.group = new Group();
@@ -28,14 +25,12 @@ public class Bullet extends Actor {
 		this.xSpeed = TankContant.BULLET_SPEED;
 		this.ySpeed = TankContant.BULLET_SPEED;
 		this.moving = true;
-		this.color = Color.RED;
 		this.live = true;
+		images = ResourceMgr.bullet;
 	}
 	
 	@Override
 	public void paint(Graphics g) {
-		Color oldColor = g.getColor();
-		g.setColor(color);
 		
 		g.drawImage(getImage(), rect.x, rect.y, null);
 		
@@ -47,8 +42,6 @@ public class Bullet extends Actor {
 		if(checkOutBound()) {
 			doingAfterBound();
 		}
-		
-		g.setColor(oldColor);
 	}
 	
 	@Override
@@ -57,23 +50,6 @@ public class Bullet extends Actor {
 	}
 
 	private BufferedImage getImage() {
-		if(Direction.LEFT == this.dir) {
-			return ResourceMgr.bulletL;
-		} else if(Direction.RIGHT == this.dir) {
-			return ResourceMgr.bulletR;
-		} else if(Direction.UP == this.dir) {
-			return ResourceMgr.bulletU;
-		} else if(Direction.DOWN == this.dir) {
-			return ResourceMgr.bulletD;
-		} else if(Direction.LEFT_UP == this.dir) {
-			return ResourceMgr.bulletLU;
-		} else if(Direction.LEFT_DOWN == this.dir) {
-			return ResourceMgr.bulletLD;
-		} else if(Direction.RIGHT_UP == this.dir) {
-			return ResourceMgr.bulletRU;
-		} else if(Direction.RIGHT_DOWN == this.dir) {
-			return ResourceMgr.bulletRD;
-		}
-		return ResourceMgr.bulletL;
+		return ResourceMgr.getImage(this.dir, images);
 	}
 }
