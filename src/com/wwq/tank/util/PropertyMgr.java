@@ -7,6 +7,8 @@ public class PropertyMgr {
 
 	static Properties props = new Properties();
 	
+	private PropertyMgr() { }
+	
 	static {
 		init();
 	}

@@ -14,7 +14,6 @@ public class ExplodeUtil {
 	}
 	
 	public static void showExplodeWav() {
-		explodeWav.play();
-		explodeWav.close();
+		new Thread(() -> new Audio("audio/explode.wav").play()).start();
 	}
 }

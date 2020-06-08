@@ -2,23 +2,22 @@ package com.wwq.tank.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.wwq.tank.ResourceMgr;
 import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Role;
+import com.wwq.tank.fire.FireGenerator;
+import com.wwq.tank.fire.impl.SingleFireGenerator;
 
 public class Tank extends Actor{
 	
 	protected BufferedImage[] images;
 	
+	protected FireGenerator<Actor> fireGenerator;
+	
 	public Tank(TankMainFrame frame) {
-		this.frame = frame;
-		this.live = true;
-		this.group = new Group();
-		this.role = Role.TANK;
-		images = ResourceMgr.baseTank;
+		this(frame, new Group());
 	}
 	
 	public Tank(TankMainFrame frame, Group group) {
@@ -26,6 +25,8 @@ public class Tank extends Actor{
 		this.live = true;
 		this.group = group;
 		this.role = Role.TANK;
+		images = ResourceMgr.baseTank;
+		this.fireGenerator = new SingleFireGenerator();
 	}
 	
 	public Tank(TankMainFrame frame, Group group, BufferedImage[] images) {
@@ -53,14 +54,10 @@ public class Tank extends Actor{
 	}
 	
 	public void fire(){
-		Bullet bullet = new Bullet(rect.x, rect.y, dir);
-		int nx = rect.x + rect.width / 2 - bullet.getRect().width / 2;
-		int ny = rect.y + rect.height / 2 - bullet.getRect().height / 2;
-		Rectangle rect1 = bullet.getRect();
-		rect1.x = nx;
-		rect1.y = ny;
-		bullet.setGroup(group);
-		frame.actors.add(bullet);
+		if(this.fireGenerator == null) {
+			return;
+		}
+		this.fireGenerator.fire(frame.actors, this);
 	}
 	
 	private BufferedImage getImage() {

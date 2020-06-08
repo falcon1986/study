@@ -11,7 +11,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Stack;
 
 import com.wwq.tank.constant.Direction;

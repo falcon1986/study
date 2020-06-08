@@ -15,5 +15,5 @@ public class TankContant {
 	public static final int BULLET_W = 12;
 	public static final int BULLET_H = 12;
 	
-	public static final int BULLET_SPEED = 10;
+	public static final int BULLET_SPEED = 20;
 }
