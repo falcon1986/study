@@ -1,6 +1,6 @@
 package com.wwq.tank.entity;
 
-import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.wwq.tank.ResourceMgr;
@@ -11,37 +11,23 @@ import com.wwq.tank.constant.TankContant;
 public class Bullet extends Actor {
 	
 	public Bullet() {
-		this.group = new Group();
 		this.role = Role.BULLET;
 	}
 	
-	public Bullet(int x, int y, Direction dir) {
+	public Bullet(int x, int y, Direction dir, Group group, BufferedImage[] images) {
 		this();
-		rect.x = x;
-		rect.y = y;
+		rect = new Rectangle(x, y, TankContant.BULLET_W, TankContant.BULLET_H);
 		this.dir = dir;
-		rect.width = TankContant.BULLET_W;
-		rect.height = TankContant.BULLET_H;
+		this.group = group;
+		this.images = images;
 		this.xSpeed = TankContant.BULLET_SPEED;
 		this.ySpeed = TankContant.BULLET_SPEED;
 		this.moving = true;
 		this.live = true;
-		images = ResourceMgr.bullet;
 	}
 	
-	@Override
-	public void paint(Graphics g) {
-		
-		g.drawImage(getImage(), rect.x, rect.y, null);
-		
-		if(moving) {
-			rect.x = dir.moveToX(rect.x, xSpeed, movingCount);
-			rect.y = dir.moveToY(rect.y, xSpeed, movingCount);
-		}
-		
-		if(checkOutBound()) {
-			doingAfterBound();
-		}
+	public Bullet(int x, int y, Direction dir, Group group) {
+		this(x, y, dir, group, ResourceMgr.bullet);
 	}
 	
 	@Override
@@ -49,7 +35,8 @@ public class Bullet extends Actor {
 		this.live = false;
 	}
 
-	private BufferedImage getImage() {
+	@Override
+	protected BufferedImage getImage() {
 		return ResourceMgr.getImage(this.dir, images);
 	}
 }

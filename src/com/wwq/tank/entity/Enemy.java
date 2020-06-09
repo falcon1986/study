@@ -10,6 +10,7 @@ import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Direction;
 import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
+import com.wwq.tank.util.Util;
 
 public class Enemy extends Player {
 	
@@ -61,16 +62,16 @@ public class Enemy extends Player {
 	}
 	
 	public void randomTask(Tank tank){
-		int x = Math.abs(rand.nextInt()) % (TankContant.GAME_WIDTH - tank.getRect().width);
+		int x = Math.abs(Util.rand.nextInt()) % (TankContant.GAME_WIDTH - tank.getRect().width);
 		tank.getRect().x = x;
-		int y = Math.abs(rand.nextInt()) % (TankContant.GAME_HEIGHT - tank.getRect().height);
+		int y = Math.abs(Util.rand.nextInt()) % (TankContant.GAME_HEIGHT - tank.getRect().height);
 		tank.getRect().y = y;
 		randomTaskDir(tank);
 	}
 
 	public void randomTaskDir(Tank tank) {
 		Direction[] dirs = Direction.values();
-		int r = Math.abs(rand.nextInt());
+		int r = Math.abs(Util.rand.nextInt());
 		int index = r % dirs.length;
 		tank.setMoving(true);
 //		tank.setxSpeed(1);

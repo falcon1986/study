@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.wwq.tank.entity.Enemy;
 import com.wwq.tank.entity.Tank;
-import com.wwq.tank.util.Util;
 
 public class EnemyThread extends Thread {
 	

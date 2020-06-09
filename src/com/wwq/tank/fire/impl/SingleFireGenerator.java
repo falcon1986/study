@@ -13,7 +13,7 @@ public class SingleFireGenerator implements FireGenerator<Actor> {
 	public void fire(List<Actor> actors, Actor t) {
 		int bx = t.getRect().x + t.getRect().width / 2 - TankContant.BULLET_W / 2;
 		int by = t.getRect().y + t.getRect().height / 2 - TankContant.BULLET_H / 2;
-		Bullet bullet = new Bullet(bx, by, t.getDir());
+		Bullet bullet = new Bullet(bx, by, t.getDir(), t.getGroup());
 		bullet.setGroup(t.getGroup());
 		actors.add(bullet);
 	}

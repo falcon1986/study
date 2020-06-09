@@ -11,28 +11,38 @@ import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
 import com.wwq.tank.util.Util;
 
-public class Actor {
+public abstract class Actor {
+	/** 角色ID **/
 	protected String id;
+	/** 角色类型 **/
 	protected Role role;
-	
+	/** 位置 **/
 	protected Rectangle rect = null;
+	/** 当前方向 **/
 	protected Direction dir = Direction.DOWN;
+	/** x轴速度 **/
 	protected int xSpeed = TankContant.TANK_SPEED;
+	/** y轴速度 **/
 	protected int ySpeed = TankContant.TANK_SPEED;
+	/** 是否移动 **/
 	protected boolean moving = false;
+	/** 当前方向移动次数 **/
 	protected int movingCount = 0;
+	/** 是否存活 **/
 	protected boolean live;
+	/** 关联主窗口 **/
 	protected TankMainFrame frame;
+	/** 当前角色所属组别 **/
 	protected Group group;
+	/** 当前角色关联图片集合 **/
 	protected BufferedImage[] images;
 	
 	public Actor() {
 		id = UUID.randomUUID().toString().replaceAll("-","");
-		rect = new Rectangle(TankContant.TANK_X, TankContant.TANK_Y, TankContant.TANK_W, TankContant.TANK_H);
 	}
 	
 	public void paint(Graphics g){
-		g.fillRect(rect.x, rect.y, rect.width, rect.height);
+		g.drawImage(getImage(), rect.x, rect.y, null);
 		
 		if(moving) {
 			rect.x = dir.moveToX(rect.x, xSpeed, movingCount);
@@ -44,9 +54,9 @@ public class Actor {
 		}
 	}
 	
-	protected void doingAfterBound() {
-		
-	}
+	protected void doingAfterBound() { }
+	
+	protected abstract BufferedImage getImage();
 
 	protected boolean checkOutBound() {
 		if(rect.x + rect.width < 0) { //超出左侧边界
