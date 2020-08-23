@@ -15,6 +15,10 @@ public abstract class Actor {
 	protected String id;
 	/** 角色类型 **/
 	protected Role role;
+	/** 原来的位置 **/
+	protected int oldX;
+	/** 原来的位置 **/
+	protected int oldY;
 	/** 位置 **/
 	protected Rectangle rect = null;
 	/** 当前方向 **/
@@ -44,6 +48,8 @@ public abstract class Actor {
 		g.drawImage(getImage(), rect.x, rect.y, null);
 		
 		if(moving) {
+			oldX = rect.x;
+			oldY = rect.y;
 			rect.x = dir.moveToX(rect.x, xSpeed, movingCount);
 			rect.y = dir.moveToY(rect.y, xSpeed, movingCount);
 		}
@@ -93,6 +99,22 @@ public abstract class Actor {
 //		tank.setySpeed(1);
 		this.setDir(dirs[index]);
 		this.movingCount = 0;
+	}
+
+	public int getOldX() {
+		return oldX;
+	}
+
+	public void setOldX(int oldX) {
+		this.oldX = oldX;
+	}
+
+	public int getOldY() {
+		return oldY;
+	}
+
+	public void setOldY(int oldY) {
+		this.oldY = oldY;
 	}
 
 	public Rectangle getRect() {

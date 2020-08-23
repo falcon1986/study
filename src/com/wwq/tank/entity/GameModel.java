@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Stack;
 
 import com.wwq.tank.EnemyThread;
+import com.wwq.tank.collision.CollisionChain;
+import com.wwq.tank.collision.IActorCollision;
 import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
-import com.wwq.tank.util.ExplodeUtil;
 
 public class GameModel {
 
@@ -19,6 +20,8 @@ public class GameModel {
 	private Enemy enemy;
 	
 	private List<Actor> actors;
+	
+	private IActorCollision collision;
 	
 	public void init() {
 		actors = new ArrayList<Actor>();
@@ -31,6 +34,8 @@ public class GameModel {
 		enemy = new Enemy(10, 3, this);
 		actors.add(enemy);
 		new EnemyThread(enemy).start();
+		
+		collision = new CollisionChain();
 	}
 	
 	public void paint(Graphics g) {
@@ -157,33 +162,11 @@ public class GameModel {
 				}
 				for(Actor a1 : acList1) {
 					for(Actor a2 : acList2) {
-						collisionChecking(a1, a2);
+						collision.collideWith(this, a1, a2);
 					}
 				}
 			}
 		}
-	}
-	
-	private void collisionChecking(Actor ac1, Actor ac2) {
-		if(Role.TANK == ac1.getRole() && Role.BULLET == ac2.getRole()
-				|| Role.TANK == ac2.getRole() && Role.BULLET == ac1.getRole()
-				|| Role.BULLET == ac2.getRole() && Role.BULLET == ac1.getRole()
-		) { //子弹和坦克碰撞、子弹和子弹碰撞
-			if(ac1.getRect().intersects(ac2.getRect())) { //碰撞
-				ac1.setLive(false);
-				ac2.setLive(false);
-				
-				//爆炸效果
-				int x = ac1.getRect().x + ac1.getRect().width / 2;
-				int y = ac1.getRect().y + ac1.getRect().height / 2;
-				ExplodeUtil.showExplode(actors, x, y);
-			}
-		} else if(Role.TANK == ac1.getRole() && Role.TANK == ac2.getRole()){
-//			if(actor.getRect().intersects(actor1.getRect())) { //碰撞
-//				
-//			}
-		}
-		
 	}
 	
 	public Tank getMyTank() {

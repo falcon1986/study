@@ -8,20 +8,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Stack;
 
 import com.wwq.tank.constant.Direction;
-import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
-import com.wwq.tank.entity.Actor;
-import com.wwq.tank.entity.Enemy;
 import com.wwq.tank.entity.GameModel;
-import com.wwq.tank.entity.Player;
 import com.wwq.tank.entity.Tank;
-import com.wwq.tank.util.ExplodeUtil;
 
 public class TankMainFrame extends Frame {
 

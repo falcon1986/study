@@ -19,17 +19,24 @@ import com.wwq.tank.util.ExplodeUtil;
 public class TankAndBulletCollision implements IActorCollision {
 
 	@Override
-	public void collideWith(GameModel gm, Actor o1, Actor o2) {
-		if(Role.TANK == o1.getRole() && Role.BULLET == o2.getRole()) {
-			o1.setLive(false);
-			o2.setLive(false);
-			
-			//爆炸效果
-			int x = o1.getRect().x + o1.getRect().width / 2;
-			int y = o1.getRect().y + o1.getRect().height / 2;
-			ExplodeUtil.showExplode(gm.getActors(), x, y);
+	public boolean collideWith(GameModel gm, Actor o1, Actor o2) {
+		if(Role.TANK == o1.getRole() && Role.BULLET == o2.getRole()
+			|| Role.BULLET == o1.getRole() && Role.TANK == o2.getRole()
+		) {
+			if(o1.getRect().intersects(o2.getRect())) { //碰撞
+				o1.setLive(false);
+				o2.setLive(false);
+				
+				//爆炸效果
+				int x = o1.getRect().x + o1.getRect().width / 2;
+				int y = o1.getRect().y + o1.getRect().height / 2;
+				ExplodeUtil.showExplode(gm.getActors(), x, y);
+				
+				return false;
+			}
 		}
 
+		return true;
 	}
 
 }

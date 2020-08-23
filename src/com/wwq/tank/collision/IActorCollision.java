@@ -21,5 +21,5 @@ public interface IActorCollision {
 	 * @param o1
 	 * @param o2
 	 */
-	void collideWith(GameModel gm, Actor o1, Actor o2);
+	boolean collideWith(GameModel gm, Actor o1, Actor o2);
 }
