@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.UUID;
 
-import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Direction;
 import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
@@ -30,8 +29,8 @@ public abstract class Actor {
 	protected int movingCount = 0;
 	/** 是否存活 **/
 	protected boolean live;
-	/** 关联主窗口 **/
-	protected TankMainFrame frame;
+	/** 关联游戏实体 **/
+	protected GameModel gm;
 	/** 当前角色所属组别 **/
 	protected Group group;
 	/** 当前角色关联图片集合 **/

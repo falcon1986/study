@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.util.Stack;
 
 import com.wwq.tank.ResourceMgr;
-import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Role;
 import com.wwq.tank.fire.impl.SingleFireGenerator;
 
@@ -13,22 +12,21 @@ public class Player extends Actor {
 
 	protected Stack<Tank> tanks;
 	protected Tank curTank;
-	protected TankMainFrame frame;
 	
-	public Player(int count, TankMainFrame frame, BufferedImage[] images) {
+	public Player(int count, GameModel gm, BufferedImage[] images) {
 		this.group = new Group();
 		this.role = Role.PLAY;
-		this.frame = frame;
+		this.gm = gm;
 		tanks = new Stack<Tank>();
 		for(int i = 0; i < count; i++) {
-			Tank tank = new Tank(frame, group, images, new SingleFireGenerator());
+			Tank tank = new Tank(gm, group, images, new SingleFireGenerator());
 			tanks.push(tank);
 		}
 		this.live = true;
 	}
 	
-	public Player(int count, TankMainFrame frame) {
-		this(count, frame, ResourceMgr.goodTank1);
+	public Player(int count, GameModel gm) {
+		this(count, gm, ResourceMgr.goodTank1);
 	}
 
 	public Tank getCurTank() {

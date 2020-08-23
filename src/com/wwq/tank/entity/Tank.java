@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.wwq.tank.ResourceMgr;
-import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
 import com.wwq.tank.fire.FireGenerator;
@@ -14,18 +13,18 @@ public class Tank extends Actor{
 	
 	protected FireGenerator<Actor> fireGenerator;
 	
-	public Tank(TankMainFrame frame) {
-		this(frame, new Group());
+	public Tank(GameModel gm) {
+		this(gm, new Group());
 	}
 	
-	public Tank(TankMainFrame frame, Group group) {
-		this(frame, group, ResourceMgr.baseTank, new SingleFireGenerator());
+	public Tank(GameModel gm, Group group) {
+		this(gm, group, ResourceMgr.baseTank, new SingleFireGenerator());
 	}
 	
-	public Tank(TankMainFrame frame, Group group, BufferedImage[] images, FireGenerator<Actor> fireGenerator) {
+	public Tank(GameModel gm, Group group, BufferedImage[] images, FireGenerator<Actor> fireGenerator) {
 		super();
 		rect = new Rectangle(TankContant.TANK_X, TankContant.TANK_Y, TankContant.TANK_W, TankContant.TANK_H);
-		this.frame = frame;
+		this.gm = gm;
 		this.group = group;
 		this.images = images;
 		this.fireGenerator = fireGenerator;
@@ -37,7 +36,7 @@ public class Tank extends Actor{
 		if(this.fireGenerator == null) {
 			return;
 		}
-		this.fireGenerator.fire(frame.actors, this);
+		this.fireGenerator.fire(gm.getActors(), this);
 	}
 	
 	@Override

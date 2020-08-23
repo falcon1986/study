@@ -6,7 +6,6 @@ import java.util.ListIterator;
 import java.util.Stack;
 
 import com.wwq.tank.ResourceMgr;
-import com.wwq.tank.TankMainFrame;
 import com.wwq.tank.constant.Direction;
 import com.wwq.tank.constant.Role;
 import com.wwq.tank.constant.TankContant;
@@ -17,8 +16,8 @@ public class Enemy extends Player {
 	protected int maxCount;
 	private Stack<Tank> aliveTanks;
 
-	public Enemy(int count, int maxCount, TankMainFrame frame) {
-		super(count, frame, ResourceMgr.badTank1);
+	public Enemy(int count, int maxCount, GameModel gm) {
+		super(count, gm, ResourceMgr.badTank1);
 		this.role = Role.ENEMY;
 		this.maxCount = maxCount;
 		aliveTanks = new Stack<Tank>();
